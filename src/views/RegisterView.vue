@@ -1,7 +1,15 @@
 <script setup>
 import { RouterLink } from 'vue-router'
-</script>
+import { ref } from 'vue'
 
+// 创建一个随机数变量用于刷新验证码
+const captchaTimestamp = ref(Date.now())
+
+// 点击验证码时刷新
+const refreshCaptcha = () => {
+  captchaTimestamp.value = Date.now()
+}
+</script>
 
 <template>
   <div class="reg-box">
@@ -15,7 +23,16 @@ import { RouterLink } from 'vue-router'
       </div>
       <div class="verify">
         <input type="text" placeholder="验证码" name="verify" />
-        <img src="https://picsum.photos/200/100" width="60px" height="40px" alt="验证码" />
+        <!-- 添加点击事件并使用动态src -->
+        <img
+          :src="`https://picsum.photos/200/100?t=${captchaTimestamp}`"
+          width="60px"
+          height="40px"
+          alt="验证码"
+          @click="refreshCaptcha"
+          style="cursor: pointer;"
+          title="点击刷新验证码"
+        />
       </div>
       <input type="submit" class="btn" value="注册" />
     </form>
